@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>music</title>
+	<style>
+		html,body,div,h3,p{margin:0;padding: 0;}
+		html,body{width:100%;height:100%;}
+		#container{
+			width:100%;height:100%;position: relative;
+			background:-webkit-linear-gradient(top left, rgba(23,59,89,0.7) 0%,rgba(153,175,129,0.7) 50%,rgba(196,146,83,0.7) 100%);
+			background:-o-linear-gradient(top left, rgba(23,59,89,0.7) 0%,rgba(153,175,129,0.7) 50%,rgba(196,146,83,0.7) 100%);
+			background:linear-gradient(to bottom right, rgba(23,59,89,0.7) 0%,rgba(153,175,129,0.7) 50%,rgba(196,146,83,0.7) 100%);
+		}
+		#mx-music{
+			width:500px;
+			height:700px;
+			color:#fff;
+			position: absolute;
+			top:50%;
+			left:50%;
+			margin-top: -350px;
+			margin-left: -250px;
+			border:1px solid rgba(255,255,255,0.3);
+			border-radius: 3px;
+			overflow: hidden;
+		}
+		#mx-bg{
+			width:100%;
+			height:100%;
+			position: absolute;
+			top:0;
+			left:0;
+			z-index: -1;
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+			filter: url(blur.svg#blur); /* FireFox, Chrome, Opera */
+    
+		    -webkit-filter: blur(10px); /* Chrome, Opera */
+		       -moz-filter: blur(10px);
+		        -ms-filter: blur(10px);    
+		            filter: blur(10px);
+    
+    		filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false); /* IE6~IE9 */
+		}
+		.mx-title{
+			width:100%;
+			height:50px;
+			text-align: center;
+		}
+		.s-name{
+			width:100%;
+			height:50px;
+			line-height: 50px;
+		}
+		.s-author{
+			width:100%;
+			height:40px;
+			text-align: center;
+		}
+		.s-author:before,.s-author:after{
+			content: '';
+			width:15px;
+			height:1px;
+			background: #fff;
+			margin:5px;
+			display: inline-block;
+		}
+		.mx-main{
+			width: 200%;
+			height:450px;
+			position: absolute;
+			left:0;
+			top:50px;
+			bottom:160px;
+			transition: 1s transform;
+		}
+		.mx-cover{
+			width:50%;
+			height:100%;
+			float: left;
+		}
+		.mx-lyric{
+			width:50%;
+			height: 100%;
+			float: left;
+			text-align: center;
+			line-height: 30px;
+			overflow: hidden;
+			position: relative;
+		}
+		.mx-lyric ul{
+			list-style: none;
+			position: absolute;
+			left:0;
+			top:50%;
+			margin:0;
+			padding:0;
+			width:100%;
+			transition: 0.5s top;
+		}
+		.mx-lyric .lyc-current{
+			color:pink;
+		}
+		.mx-photo{
+			width:400px;
+			height:400px;
+			margin:0 auto;
+		}
+		.mx-photo img{
+			width:100%;
+			height:100%;
+			border-radius: 50%;
+			box-shadow: 0px 0px  10px 10px rgba(0,0,0,0.3);
+		}
+		.mx-item{
+			position: absolute;
+			left:0;
+			top: 0;
+			width:100%;
+			height:30px;
+			line-height: 30px;
+			text-align: center;
+		}
+		.mx-item span{
+			width:10px;
+			height:10px;
+			background: #000;
+			border-radius: 50%;
+			display: inline-block;
+			cursor: pointer;
+		}
+		.mx-item span.active{
+			background: #fff;
+		}
+		.mx-play{
+			width:100%;
+			height:160px;
+			position: absolute;
+			bottom: 0;
+			left:0;
+		}
+		.mx-drag{
+			width:100%;
+			height:30px;
+			line-height: 30px;
+			position: absolute;
+			top:30px;
+			left:0;
+		}
+		.mx-drag span,.mx-drag div{
+			position: absolute;
+			top:0;
+		}
+		.mx-drag span{
+			width:10%;
+			height:100%;
+		}
+		.mx-drag .curTime{
+			left:0;
+			text-align: right;
+		}
+		.mx-drag .allTime{
+			right:0;
+			text-align: left;
+		}
+		.mx-drag .time-bar{
+			left:13%;
+			right:13%;
+			top:40%;
+			bottom: 40%;
+			background:rgba(255,255,255,0.3);
+			border-radius: 3px;
+		}
+		.time-bar .drag-icon{
+			display: block;
+			position: absolute;
+			left:-8px;
+			top:-5px;
+			width:16px;
+			height:16px;
+			border-radius: 50%;
+			background: #31C37C;
+		}
+		.time-bar .drag-bar{
+			display: block;
+			width: 0;
+			height: 100%;
+			border-radius: 3px;
+			background:#31C37C;
+		}
+		.mx-control{
+			width:100%;
+			height: 90px;
+			color:#31C37C;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+		}
+		.mx-control>div{
+			position: absolute;
+			top:50%;
+			border:1px solid #31C37C;
+			border-radius: 50%;
+			text-align: center;
+			cursor: pointer;
+		}
+		.mx-prev{
+			width:40px;
+			height:40px;
+			left:20%;
+			margin-top: -20px;
+			line-height: 40px;
+		}
+		.mx-pause{
+			width:60px;
+			height:60px;
+			left:50%;
+			margin-left: -30px;
+			margin-top: -30px;
+			line-height: 60px;
+		}
+		.mx-next{
+			width:40px;
+			height:40px;
+			right:20%;
+			margin-top: -20px;
+			line-height: 40px;
+		}
+		@keyframes toRotate{
+			from{transform:rotate(0deg);}
+			to{transform: rotate(360deg);}
+		}
+
+		
+		.rotate{
+			animation: toRotate 10s linear 0.3s  infinite;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="container">
+		<div id="mx-music">
+			<div id="mx-bg"></div>
+			<div class="mx-title">
+				<h3 class="s-name">Animals</h3>
+			</div>
+			<div class="mx-main">
+				<div class="mx-cover">
+					<p class="s-author">明明明明</p>
+					<div class="mx-photo">
+						<img src="author.png" />
+					</div>
+				</div>
+				<div class="mx-lyric">
+					<ul></ul>
+				</div>
+			</div>
+			
+			<div class="mx-play">
+				<div class="mx-item">
+					<span class="active"></span>
+					<span></span>
+				</div>
+				<div class="mx-drag">
+					<span class="curTime">00:00</span>
+					<div class="time-bar">
+						<i class="drag-icon"></i>
+						<i class="drag-bar"></i>
+					</div>
+					<span class="allTime">00:00</span>
+				</div>
+				<div class="mx-control">
+					<div class="mx-prev">&lt;</div>
+					<div class="mx-pause">||</div>
+					<div class="mx-next">&gt;</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<audio src="" id="audio"></audio>
+	<script src="js/star.js"></script>
+	<script src="js/data.js"></script>
+	<script src="js/index.js"></script>
+</body>
+</html>
